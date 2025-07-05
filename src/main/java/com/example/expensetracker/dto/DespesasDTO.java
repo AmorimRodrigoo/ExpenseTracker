@@ -1,7 +1,5 @@
-package com.example.expensetracker.entity;
+package com.example.expensetracker.dto;
 
-import jakarta.persistence.*;
-import org.hibernate.proxy.HibernateProxy;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,29 +7,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-public class Despesas implements Serializable {
+public class DespesasDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_despesa")
     private Long id_despesa;
 
-    @Column(name = "id_usuario", unique = true, nullable = false)
     private Long id_usuario;
-    @Column(name = "descricao", nullable = false, length = 500)
     private String descricao;
-    @Column(name = "valor", nullable = false, precision = 10, scale = 2)
     private BigDecimal valor;
-    @Column(name = "data_despesa", nullable = false)
     private LocalDate data_despesa;
-    @Column(name = "data_registro")
     private LocalDateTime data_registro;
 
-    public Despesas() {
-    }
+    public DespesasDTO() {}
 
     public Long getId_despesa() {
         return id_despesa;
@@ -82,20 +70,14 @@ public class Despesas implements Serializable {
     }
 
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Despesas despesas = (Despesas) o;
-        return id_despesa != null && Objects.equals(id_despesa, despesas.id_despesa);
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        DespesasDTO that = (DespesasDTO) o;
+        return Objects.equals(id_despesa, that.id_despesa) && Objects.equals(id_usuario, that.id_usuario) && Objects.equals(descricao, that.descricao) && Objects.equals(valor, that.valor) && Objects.equals(data_despesa, that.data_despesa) && Objects.equals(data_registro, that.data_registro);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        return Objects.hash(id_despesa, id_usuario, descricao, valor, data_despesa, data_registro);
     }
 }
-
-
